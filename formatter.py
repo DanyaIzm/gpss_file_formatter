@@ -70,7 +70,7 @@ class GPSSFileFormatter():
         for line_index in range(0, len(lines) - 1):
             if lines[line_index] == lines[line_index + 1] and lines[line_index] == '\n':
                 indexes_to_pop.append(line_index)
-        
+
         for index in indexes_to_pop:
             lines.pop(index)
         
