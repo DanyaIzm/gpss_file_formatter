@@ -1,4 +1,6 @@
+from tabulate import tabulate
 from typing import List
+import re
 
 
 class GPSSFileFormatter():
@@ -55,10 +57,17 @@ class GPSSFileFormatter():
             lines[line_index] = lines[line_index].split(';')[0]
             if not lines[line_index].endswith('\n'):
                 lines[line_index] += '\n'
-            # replace spaces to tabs
-            lines[line_index] = lines[line_index].replace(' ', '\t')
 
         lines = self._remove_extra_lines(lines)
+        lines = [x for x in tabulate([re.split('\s+|\t+', y) for y in lines]).split('\n')]
+
+        # TODO: refactor this
+        # remove first and last lines in tabulate string
+        lines.pop(0)
+        lines.pop()
+
+        lines = [line + '\n' for line in lines]
+
         return lines
 
     def _remove_extra_lines(self, lines: List[str]) -> List[str]:
