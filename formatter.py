@@ -59,9 +59,27 @@ class GPSSFileFormatter():
                 lines[line_index] += '\n'
 
         lines = self._remove_extra_lines(lines)
-        lines = [x for x in tabulate([re.split('\s+|\t+', y) for y in lines]).split('\n')]
 
         # TODO: refactor this
+        lines = [re.split('\s+|\t+', line) for line in lines]
+
+        # remove all spaces after line
+        for index, line in enumerate(lines):
+            while line:
+                if not line[-1]:
+                    lines[index].pop()
+                else: 
+                    break
+
+        max_line_len = len(max(lines))
+
+        for line in lines:
+            line_length_delta = max_line_len - len(line)
+            for _ in range(line_length_delta):
+                line.insert(0, '')
+
+        lines = [x for x in tabulate(lines, rowalign='right').split('\n')]
+
         # remove first and last lines in tabulate string
         lines.pop(0)
         lines.pop()
