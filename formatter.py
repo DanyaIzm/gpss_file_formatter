@@ -1,6 +1,7 @@
+import sys
+import re
 from tabulate import tabulate
 from typing import List
-import re
 
 
 class GPSSFileFormatter():
@@ -121,7 +122,11 @@ class GPSSFileFormatter():
 
         
 def main():
-    file_path = input('Введите название файла/путь к файлу: ')
+    if len(sys.argv) > 1:
+        file_path = sys.argv[1]    # get drag'n'dropped (or pasted in the prompt) file name
+    else:
+        file_path = input('Введите название файла/путь к файлу: ')
+
     formatter = GPSSFileFormatter(file_path)
 
     formatter.format()
