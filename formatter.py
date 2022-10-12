@@ -61,7 +61,7 @@ class GPSSFileFormatter():
         lines = self._remove_extra_lines(lines)
 
         # TODO: refactor this
-        lines = [re.split('\s+|\t+', line) for line in lines]
+        lines = [re.split(r'\s+|\t+', line) for line in lines]
 
         # remove all spaces after line
         for index, line in enumerate(lines):
@@ -75,6 +75,10 @@ class GPSSFileFormatter():
 
         for line in lines:
             line_length_delta = max_line_len - len(line)
+            if (line_length_delta >= 2 and max_line_len > 2) or (line_length_delta >= 1 and max_line_len <= 2):
+                for word in line:
+                    if word.strip().startswith('TERMINATE'):
+                        line_length_delta -= 1
             for _ in range(line_length_delta):
                 line.insert(0, '')
 
